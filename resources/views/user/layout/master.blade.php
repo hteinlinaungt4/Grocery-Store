@@ -58,6 +58,7 @@
                         <div class="navbar-nav mr-auto py-0">
                             <a href="{{ route('userhome')}}" class="nav-item nav-link active">Home</a>
                             <a href="{{ route('user#contactpage') }}" class="nav-item nav-link active">Contact</a>
+                            <a href="{{ route('aboutuspage') }}" class="nav-item nav-link active">About Us</a>
                         </div>
                         <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
                             <a href="" class="btn px-0">

@@ -58,6 +58,13 @@
                             </a>
                         </li>
 
+
+                        <li>
+                            <a href="{{ route('subCategory#list') }}">
+                                <i class="fas fa-bars"></i>Sub Category
+                            </a>
+                        </li>
+
                         <li>
                             <a href="{{ route('product#list') }}">
                                 <i class="fa-sharp fa-solid fa-pizza-slice"></i>Products

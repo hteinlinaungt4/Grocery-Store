@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\user\AjaxController;
 use App\Http\Controllers\user\UserController;
 use App\Models\Contact;
@@ -35,6 +36,16 @@ Route::middleware(['auth'])->group(function () {
             Route::get('delete/{id}',[CategoryController::class,'delete'])->name('category#delete');
             Route::get('editpage/{id}',[CategoryController::class,'edit'])->name('category#editpage');
             Route::post('update',[CategoryController::class,'update'])->name('category#update');
+        });
+
+        // admin sub category
+        Route::prefix('subcategory')->group(function(){
+            Route::get('list',[SubCategoryController::class,'list'])->name('subCategory#list');
+            Route::get('createpage',[SubCategoryController::class,'subCategory'])->name('subCategory#createpage');
+            Route::post('create',[SubCategoryController::class,'create'])->name('subCategory#create');
+            Route::get('delete/{id}',[SubCategoryController::class,'delete'])->name('subCategory#delete');
+            Route::get('editpage/{id}',[SubCategoryController::class,'edit'])->name('subCategory#editpage');
+            Route::post('update',[SubCategoryController::class,'update'])->name('subCategory#update');
         });
         // product
         Route::prefix('product')->group(function(){
@@ -103,6 +114,10 @@ Route::middleware(['auth'])->group(function () {
             Route::get('contactpage',[ContactController::class,'contact'])->name('user#contactpage');
             Route::post('contactcreate',[ContactController::class,'contactcreate'])->name('user#contactcreate');
         });
+        // about us
+        Route::get('/aboutus',function(){
+            return view('user.aboutus');
+        })->name('aboutuspage');
         // password
         Route::prefix('password')->group(function(){
             Route::get('changepage',[UserController::class,'changepasswordpage'])->name('userpassword#changepage');
