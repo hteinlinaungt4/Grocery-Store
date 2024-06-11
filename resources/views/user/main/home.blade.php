@@ -9,22 +9,32 @@
             <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by Category</span></h5>
             <div class="bg-light p-4 mb-30">
 
-                    <div class="d-flex align-items-center justify-content-between mb-3 bg-dark py-2 px-3 text-warning">
-                        <a href="{{ route('user#catfilter')}}"><label class="mt-2" for="price-all">All Category</label></a>
-                        <span class="badge border font-weight-normal">{{ count($categories) }}</span>
-                    </div>
-                    @foreach($categoriesWithSubcategories as $category)
-                        <a href="{{route('user#catfilter',$category->id)}}"> <h2>{{ $category->name }}</h2></a>
+                <div class="d-flex align-items-center justify-content-between mb-3 bg-dark py-2 px-3 text-warning">
+                    <a href="{{ route('user#catfilter') }}">
+                        <label class="mt-2" for="price-all">All Category</label>
+                    </a>
+                    <span class="badge border font-weight-normal">{{ count($categories) }}</span>
+                </div>
+                @foreach($categoriesWithSubcategories as $category)
+                    <div class="category">
+                        <a href="{{ route('user#catfilter', $category->name) }}">
+                            <h2>{{ $category->name }}</h2>
+                        </a>
                         @if($category->subcategories->isNotEmpty())
-                            <ul >
+                            <ul>
                                 @foreach($category->subcategories as $subcategory)
-                                    <li><a style="color: black;" href="{{route('user#catfilter',$subcategory->id)}}">{{ $subcategory->name }}</a></li>
+                                    <li>
+                                        <a style="color: black;" href="{{ route('user#catfilter', $subcategory->name) }}">
+                                            {{ $subcategory->name }}
+                                        </a>
+                                    </li>
                                 @endforeach
                             </ul>
                         @else
                             <p>No subcategories available.</p>
                         @endif
-                    @endforeach
+                    </div>
+                @endforeach
 
             </div>
             <!-- Price End -->
@@ -70,9 +80,9 @@
                         </div>
                     </div>
                 </div>
-                @if (count($product) !=0)
+                @if (count($products) !=0)
                 <div id="list" class="row">
-                    @foreach ($product as $p)
+                    @foreach ($products as $p)
                     <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
                         <div class="product-item bg-light mb-4">
                             <div class="product-img position-relative overflow-hidden">
@@ -94,7 +104,7 @@
                 </div>
                 @else
                     <div class="d-flex justify-content-center align-content-center mt-5">
-                        <h1 class="align-self-center mt-5 text-muted">Today have not pizza</h1>
+                        <h1 class="align-self-center mt-5 text-muted">Today have not Product</h1>
                     </div>
                 @endif
             </div>
