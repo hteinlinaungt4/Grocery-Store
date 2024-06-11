@@ -1,5 +1,5 @@
 @extends('admin.layout.master')
-@section('title','Category List')
+@section('title','Sub Category List')
 @section('content')
 <!-- MAIN CONTENT-->
 <div class="main-content">
@@ -10,11 +10,11 @@
                 <div class="table-data__tool">
                     <div class="table-data__tool-left">
                         <div class="overview-wrap">
-                            <h2 class="title-1">Category List</h2>
+                            <h2 class="title-1">SubCategory List</h2>
                         </div>
                     </div>
                     <div class="table-data__tool-right">
-                        <a href="{{route('category#createpage')}}">
+                        <a href="{{route('subCategory#createpage')}}">
                             <button class="au-btn au-btn-icon au-btn--green au-btn--small">
                                 <i class="zmdi zmdi-plus"></i>add item
                             </button>
@@ -29,7 +29,7 @@
                                 Searh Key:<span class="text-danger"> {{ request('search') }}</span>
                             </div>
                             <div class="col-2 bg-light offset-2">
-                                Total:  <span class="fs-5">{{ $categories->total() }}</span>
+                                Total:  <span class="fs-5">{{ $subcategories->total() }}</span>
                             </div>
                            </div>
                         </div>
@@ -45,20 +45,22 @@
                     </div>
                 </div>
                 <div class="table-responsive table-responsive-data2">
-                    @if ($categories->total() != 0)
+                    @if ($subcategories->total() != 0)
                     <table class="table table-data2">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>CATEGORY NAME</th>
+                                <th>CATEGORY</th>
+                                <th>SUBCATEGORY NAME</th>
                                 <th>CREATED DATE</th>
                                 <th class="float-end">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                           @foreach ($categories as $category)
+                           @foreach ($subcategories as $category)
                            <tr class="tr-shadow">
                             <td>{{ $category->id }}</td>
+                            <td>{{$category->category_name}}</td>
                             <td>
                                 <span class="block-email">{{ $category->name }}</span>
                             </td>
@@ -66,12 +68,12 @@
                             <td>
                                 <div class="table-data-feature">
                                     <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
-                                        <a href="{{route('category#editpage',$category->id)}}">
+                                        <a href="{{route('subCategory#editpage',$category->id)}}">
                                             <i class="zmdi zmdi-edit "></i>
                                         </a>
                                     </button>
                                     <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
-                                        <a href="{{ route('category#delete',$category->id) }}">
+                                        <a href="{{ route('subCategory#delete',$category->id) }}">
                                             <i class="zmdi zmdi-delete"></i>
                                         </a>
                                     </button>
@@ -84,9 +86,9 @@
                         </tbody>
                     </table>
                     @else
-                        <h1 class=" text-muted text-center fs-3 my-5">There is no Category here</h1>
+                        <h1 class=" text-muted text-center fs-3 my-5">There is no SubCategory here</h1>
                     @endif
-                    {{ $categories->appends(request()->query())->links()}}
+                    {{ $subcategories->appends(request()->query())->links()}}
                 </div>
                 <!-- END DATA TABLE -->
             </div>

@@ -74,7 +74,7 @@
                                             </td>
                                             <td>{{ $products->name }}</td>
                                             <td>{{ $products->price }}</td>
-                                            <td>{{ $products->category_name }}</td>
+                                            <td>{{ $products->subcategory_name }}</td>
                                             <td>{{ $products->view_count }}</td>
                                             <td>
                                                 <div class="table-data-feature">

@@ -6,7 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\SubCategoryController;
+use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\user\AjaxController;
 use App\Http\Controllers\user\UserController;
 use App\Models\Contact;
@@ -40,12 +40,12 @@ Route::middleware(['auth'])->group(function () {
 
         // admin sub category
         Route::prefix('subcategory')->group(function(){
-            Route::get('list',[SubCategoryController::class,'list'])->name('subCategory#list');
-            Route::get('createpage',[SubCategoryController::class,'subCategory'])->name('subCategory#createpage');
-            Route::post('create',[SubCategoryController::class,'create'])->name('subCategory#create');
-            Route::get('delete/{id}',[SubCategoryController::class,'delete'])->name('subCategory#delete');
-            Route::get('editpage/{id}',[SubCategoryController::class,'edit'])->name('subCategory#editpage');
-            Route::post('update',[SubCategoryController::class,'update'])->name('subCategory#update');
+            Route::get('list',[SubcategoryController::class,'list'])->name('subCategory#list');
+            Route::get('createpage',[SubcategoryController::class,'subCategory'])->name('subCategory#createpage');
+            Route::post('create',[SubcategoryController::class,'create'])->name('subCategory#create');
+            Route::get('delete/{id}',[SubcategoryController::class,'delete'])->name('subCategory#delete');
+            Route::get('editpage/{id}',[SubcategoryController::class,'edit'])->name('subCategory#editpage');
+            Route::post('update',[SubcategoryController::class,'update'])->name('subCategory#update');
         });
         // product
         Route::prefix('product')->group(function(){
@@ -105,7 +105,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/homePage',[UserController::class,'home'])->name('userhome');
         Route::get('/profile',[UserController::class,'profile'])->name('user#profile');
         Route::post('/profileedit',[UserController::class,'profileedit'])->name('user#profileedit');
-        Route::get('/filter/{id}',[UserController::class,'filter'])->name('user#catfilter');
+        Route::get('/filter/{id?}',[UserController::class,'filter'])->name('user#catfilter');
         Route::get('pizzalist{id}',[UserController::class,'pizzalist'])->name('user#pizzalist');
         Route::get('history',[UserController::class,'history'])->name('user#history');
         Route::get('viewcount',[AjaxController::class,'viewcount'])->name('Ajax#viewcount');

@@ -8,23 +8,27 @@
             <!-- Price Start -->
             <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by Category</span></h5>
             <div class="bg-light p-4 mb-30">
-                <form>
+
                     <div class="d-flex align-items-center justify-content-between mb-3 bg-dark py-2 px-3 text-warning">
-                        <a href="{{ route('userhome')}}"><label class="mt-2" for="price-all">All Category</label></a>
-                        <span class="badge border font-weight-normal">{{ count($category) }}</span>
+                        <a href="{{ route('user#catfilter')}}"><label class="mt-2" for="price-all">All Category</label></a>
+                        <span class="badge border font-weight-normal">{{ count($categories) }}</span>
                     </div>
-                    @foreach ($category as $cat)
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-                       <a href="{{ route('user#catfilter',$cat->id)}}"> <label class="text-black" for="price-5">{{ $cat->name }}</label></a>
-                        {{-- <span class="badge border font-weight-normal">168</span> --}}
-                    </div>
+                    @foreach($categoriesWithSubcategories as $category)
+                        <a href="{{route('user#catfilter',$category->id)}}"> <h2>{{ $category->name }}</h2></a>
+                        @if($category->subcategories->isNotEmpty())
+                            <ul >
+                                @foreach($category->subcategories as $subcategory)
+                                    <li><a style="color: black;" href="{{route('user#catfilter',$subcategory->id)}}">{{ $subcategory->name }}</a></li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p>No subcategories available.</p>
+                        @endif
                     @endforeach
-                </form>
+
             </div>
             <!-- Price End -->
-            <div class="">
-                <button class="btn btn btn-warning w-100">Order</button>
-            </div>
+
             <!-- Size End -->
         </div>
         <!-- Shop Sidebar End -->

@@ -53,16 +53,16 @@
                                         </div>
                                         <div class="mb-4">
                                             <label for="">Category</label>
-                                            <select name="category" class="form-control @error('category') is-invalid @enderror">
+                                            <select name="subcategory" class="form-control @error('subcategory') is-invalid @enderror">
                                                 <option value="">Choose Category</option>
-                                                @foreach ($category as $cat)
+                                                @foreach ($subcategory as $cat)
                                                     <option value="{{ $cat->id }}"
-                                                        @if ($cat->id == $product->category_id) selected @endif>
+                                                        @if ($cat->id == $product->subcategory_id) selected @endif>
                                                         {{ $cat->name }}</option>
                                                 @endforeach
 
                                             </select>
-                                            @error('category')
+                                            @error('subcategory')
                                                 <div class="invalid-feedback">
                                                     {{ $message }}
                                                 </div>

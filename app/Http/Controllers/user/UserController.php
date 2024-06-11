@@ -7,7 +7,9 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Subcategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -17,13 +19,37 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
     //home
-    function home(){
-        $category=Category::get();
-        $product=Product::orderBy('created_at','desc')->get();
-        $cart=Cart::where('user_id',Auth::user()->id)->get();
-        $order=Order::where('user_id',Auth::user()->id)->get();
-        return view('user.main.home',compact('product','category','cart','order'));
+    // function home(){
+    //     $category=Category::get();
+    //     $product=Product::orderBy('created_at','desc')->get();
+    //     $cart=Cart::where('user_id',Auth::user()->id)->get();
+    //     $order=Order::where('user_id',Auth::user()->id)->get();
+    //     return view('user.main.home',compact('product','category','cart','order'));
+    // }
+
+    function home()
+    {
+        $categories = Category::get();
+        $subcategories = Subcategory::get();
+
+        $product = Product::orderBy('created_at', 'desc')->get();
+        $cart = Cart::where('user_id', Auth::user()->id)->get();
+        $order =Order::where('user_id', Auth::user()->id)->get();
+
+        // Organize subcategories by their parent category
+        $categoriesWithSubcategories = $categories->map(function ($category) use ($subcategories) {
+            $category->subcategories = $subcategories->filter(function ($subcategory) use ($category) {
+                return $subcategory->category_id === $category->id;
+            });
+            return $category;
+        });
+
+
+
+        return view('user.main.home', compact('categories','product', 'categoriesWithSubcategories', 'cart', 'order'));
     }
+
+
     // delete
     function delete($id){
         $oldimg=User::select('image')->where('id',$id)->first()->toArray();
@@ -36,14 +62,68 @@ class UserController extends Controller
     }
 
       // cat filter
-      function filter($id){
-        $cart=Cart::select('carts.*','products.name as product_name','products.price as product_price','products.image as product_image')
-        ->leftjoin('products','carts.product_id','products.id')
-        ->where('carts.user_id',Auth::user()->id)->get();
-        $category=Category::get();
-        $order=Order::where('user_id',Auth::user()->id)->get();
-        $product=Product::where('category_id',$id)->orderBy('created_at','desc')->get();
-        return view('user.main.home',compact('product','category','cart','order'));
+      public function filter($id = null)
+      {
+        // Fetch cart details
+        $cart = DB::table('carts')
+            ->select('carts.*', 'products.name as product_name', 'products.price as product_price', 'products.image as product_image')
+            ->leftJoin('products', 'carts.product_id', '=', 'products.id')
+            ->where('carts.user_id', Auth::user()->id)
+            ->get();
+
+        // Fetch orders for the user
+        $order = DB::table('orders')
+            ->where('user_id', Auth::user()->id)
+            ->get();
+
+        // Fetch products based on the category or subcategory ID
+        if ($id) {
+            $category = DB::table('categories')->where('id', $id)->first();
+            $subcategory = DB::table('subcategories')->where('id', $id)->first();
+
+            if ($category) {
+                // Fetch products for all subcategories under this category
+                $product = DB::table('products')
+                    ->whereIn('subcategory_id', function ($query) use ($id) {
+                        $query->select('id')
+                              ->from('subcategories')
+                              ->where('category_id', $id);
+                    })
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+            } elseif ($subcategory) {
+                // Fetch products for this specific subcategory
+                $product = DB::table('products')
+                    ->where('subcategory_id', $id)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+            } else {
+                // If neither, return all products (you might want to handle this case differently)
+                $product = DB::table('products')
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+            }
+        } else {
+            // If no ID is provided, return all products
+            $product = DB::table('products')
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
+
+        // Fetch all categories and subcategories
+        $categories = DB::table('categories')->get();
+        $subcategories = DB::table('subcategories')->get();
+
+        // Organize subcategories by their parent category
+        $categoriesWithSubcategories = $categories->map(function ($category) use ($subcategories) {
+            $category->subcategories = $subcategories->filter(function ($subcategory) use ($category) {
+                return $subcategory->category_id === $category->id;
+            });
+            return $category;
+        });
+
+        // Pass the organized data to the view
+        return view('user.main.home', compact('product', 'categories', 'cart', 'order', 'categoriesWithSubcategories'));
     }
 
     function history(){

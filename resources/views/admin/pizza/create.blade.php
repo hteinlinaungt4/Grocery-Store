@@ -29,14 +29,14 @@
                                 @enderror
                             </div>
                             <div class="form-group mb-3">
-                                <label for="cc-payment" class="control-label mb-1">Category</label>
-                                <select name="category" id="" class="form-control @error('category') is-invalid @enderror" >
+                                <label for="cc-payment" class="control-label mb-1">SubCategory</label>
+                                <select name="subcategory" id="" class="form-control @error('subcategory') is-invalid @enderror" >
                                     <option value="">Choose Category</option>
-                                    @foreach ($cat as $category)
+                                    @foreach ($subcats as $category)
                                         <option value="{{$category->id}}">{{ $category->name }}</option>
                                     @endforeach
                                 </select>
-                                @error('category')
+                                @error('subcategory')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
